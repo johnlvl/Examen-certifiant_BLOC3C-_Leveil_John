@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Examen_certifiant_BLOC3C__Leveil_John.Models;
 
 namespace Examen_certifiant_BLOC3C__Leveil_John.Data
 {
@@ -9,5 +10,10 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Data
             : base(options)
         {
         }
+        public DbSet<Examen_certifiant_BLOC3C__Leveil_John.Models.Compte> Comptes { get; set; } = default!;
+        public DbSet<Examen_certifiant_BLOC3C__Leveil_John.Models.Client> Clients { get; set; } = default!;
+        public DbSet<Examen_certifiant_BLOC3C__Leveil_John.Models.Offre> Offres { get; set; } = default!;
+        public DbSet<Examen_certifiant_BLOC3C__Leveil_John.Models.Panier> Paniers { get; set; } = default!;
+        public DbSet<Examen_certifiant_BLOC3C__Leveil_John.Models.Reservation> Reservations { get; set; } = default!;
     }
 }
