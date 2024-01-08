@@ -4,13 +4,12 @@ using Examen_certifiant_BLOC3C__Leveil_John.Models;
 
 namespace Examen_certifiant_BLOC3C__Leveil_John.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
         }
-        public DbSet<Examen_certifiant_BLOC3C__Leveil_John.Models.Compte> Comptes { get; set; } = default!;
         public DbSet<Examen_certifiant_BLOC3C__Leveil_John.Models.Client> Clients { get; set; } = default!;
         public DbSet<Examen_certifiant_BLOC3C__Leveil_John.Models.Offre> Offres { get; set; } = default!;
         public DbSet<Examen_certifiant_BLOC3C__Leveil_John.Models.Panier> Paniers { get; set; } = default!;

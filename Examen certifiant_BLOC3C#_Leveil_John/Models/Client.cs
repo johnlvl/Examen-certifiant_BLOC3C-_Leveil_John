@@ -18,7 +18,5 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Models
         public int Age { get; set; }
 
         public int CompteId { get; set; }
-
-        public virtual Compte Compte { get; set; }
     }
 }
