@@ -6,7 +6,5 @@
 
         public int ClientId { get; set; }
 
-        public virtual Client Client { get; set; }
-
     }
 }
