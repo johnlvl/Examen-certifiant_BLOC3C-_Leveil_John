@@ -1,5 +1,5 @@
 ﻿@page
-@model Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages.IndexModel
+@model Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages.IndexModel;
 
 @{
     ViewData["Title"] = "Index";
@@ -14,22 +14,29 @@
         <div class="row">
             @foreach (var item in Model.Offre)
             {
-                <div class="col-md-4">
-                    <div class="card-body p-4">
-                        <div class="row">
-                            <div class="col-8">
-                                <h3 class="mb-0">@Html.DisplayFor(modelItem => item.TypeOffre)</h3>
+                <form method="post" asp-page-handler="AjouterAuPanier" asp-route-id="@item.ID">
+                    <div class="col-md-4">
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-8">
+                                    <h3 class="mb-0">@Html.DisplayFor(modelItem => item.TypeOffre)</h3>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <h2 class="mb-0"><b>@Html.DisplayFor(modelItem => item.Prix)</b></h2>
+                                </div>
+                                <div>
+                                    <label asp-for="Offres.Quantite">Quantité :</label>
+                                    <input asp-for="Offres.Quantite" class="form-control" type="number" value="1" />
+                                </div>
                             </div>
-                            <div class="col-4 text-right">
-                                <h2 class="mb-0"><b>@Html.DisplayFor(modelItem => item.Prix)</b></h2>
-                            </div>
+                            <input type="hidden" asp-for="Offres.ID" value="@item.ID" />
+                            <button type="submit" class="btn btn-primary mt-3">Ajouter au panier</button>
+                            <a asp-page="./Edit" asp-route-id="@item.ID">Editer</a> |
+                            <a asp-page="./Details" asp-route-id="@item.ID">Détails</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.ID">Supprimer</a>
                         </div>
-                        <a class="btn btn-primary mt-3" href="#">Ajouter au panier</a>
-                        <a asp-page="./Edit" asp-route-id="@item.ID">Editer</a> |
-                        <a asp-page="./Details" asp-route-id="@item.ID">Details</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.ID">Supprimer</a>
                     </div>
-                </div>
+                </form>
             }
         </div>
     </div>
