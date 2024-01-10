@@ -1,5 +1,5 @@
 ﻿@page
-@model Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages.IndexModel
+@model Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages.IndexModel;
 
 @{
     ViewData["Title"] = "Index";
@@ -9,31 +9,37 @@
     <a asp-page="Create">Créer une nouvelle offre</a>
 </p>
 
-<div class="py-5">
-    <div class="container">
-        <div class="row">
-            @foreach (var item in Model.Offre)
-            {
-                <div class="col-md-4">
-                    <div class="card-body p-4">
-                        <div class="row">
-                            <div class="col-8">
-                                <h3 class="mb-0">@Html.DisplayFor(modelItem => item.TypeOffre)</h3>
+<form method="post" asp-page-handler="AjouterAuPanier" asp-route-id="">
+    <div class="py-5">
+        <div class="container">
+            <div class="row">
+                @foreach (var item in Model.Offre)
+                {
+                    <div class="col-md-4">
+                        <div class="card-body p-4">
+                            <div class="row">
+                                <div class="col-8">
+                                    <h3 class="mb-0">@Html.DisplayFor(modelItem => item.TypeOffre)</h3>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <h2 class="mb-0"><b>@Html.DisplayFor(modelItem => item.Prix)</b></h2>
+                                </div>
+                                <div>
+                                <label asp-for="Offres.Quantite">Quantité :</label>
+                                <input asp-for="Offres.Quantite" class="form-control" type="number" value="1" />
+                                </div>
                             </div>
-                            <div class="col-4 text-right">
-                                <h2 class="mb-0"><b>@Html.DisplayFor(modelItem => item.Prix)</b></h2>
-                            </div>
+                            <button type="submit" class="btn btn-primary mt-3" href="#">Ajouter au panier</button>
+                            <a asp-page="./Edit" asp-route-id="@item.ID">Editer</a> |
+                            <a asp-page="./Details" asp-route-id="@item.ID">Détails</a> |
+                            <a asp-page="./Delete" asp-route-id="@item.ID">Supprimer</a>
                         </div>
-                        <a class="btn btn-primary mt-3" href="#">Ajouter au panier</a>
-                        <a asp-page="./Edit" asp-route-id="@item.ID">Editer</a> |
-                        <a asp-page="./Details" asp-route-id="@item.ID">Détails</a> |
-                        <a asp-page="./Delete" asp-route-id="@item.ID">Supprimer</a>
                     </div>
-                </div>
-            }
+                }
+            </div>
         </div>
     </div>
-</div>
+</form>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
