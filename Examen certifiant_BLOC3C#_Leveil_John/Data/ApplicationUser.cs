@@ -13,6 +13,6 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Data
         [StringLength(100)]
         public string Prenom { get; set; }
 
-        public string CleCompte { get; set; }
+        public string? CleCompte { get; set; }
     }
 }

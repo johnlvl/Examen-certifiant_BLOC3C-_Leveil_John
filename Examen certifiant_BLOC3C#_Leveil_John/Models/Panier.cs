@@ -5,6 +5,5 @@
         public int ID { get; set; }
 
         public int ClientId { get; set; }
-
     }
 }
