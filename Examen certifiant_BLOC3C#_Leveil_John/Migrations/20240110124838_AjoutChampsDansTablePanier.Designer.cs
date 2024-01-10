@@ -4,6 +4,7 @@ using Examen_certifiant_BLOC3C__Leveil_John.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240110124838_AjoutChampsDansTablePanier")]
+    partial class AjoutChampsDansTablePanier
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -63,9 +66,6 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int?>("PanierId")
-                        .HasColumnType("int");
-
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
@@ -99,8 +99,6 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.HasIndex("PanierId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -316,15 +314,6 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
-                });
-
-            modelBuilder.Entity("Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationUser", b =>
-                {
-                    b.HasOne("Examen_certifiant_BLOC3C__Leveil_John.Models.Panier", "Panier")
-                        .WithMany()
-                        .HasForeignKey("PanierId");
-
-                    b.Navigation("Panier");
                 });
 
             modelBuilder.Entity("Examen_certifiant_BLOC3C__Leveil_John.Models.Offre", b =>
