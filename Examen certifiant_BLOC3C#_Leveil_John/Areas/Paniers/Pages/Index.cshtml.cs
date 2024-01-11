@@ -19,11 +19,14 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Paniers.Pages
             _context = context;
         }
 
+        [BindProperty]
+        public Panier Paniers { get; set; }
+
         public IList<Panier> Panier { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Panier = await _context.Paniers.ToListAsync();
+            Panier = await _context.Paniers.Include(p => p.OffresPanier).ToListAsync();
         }
     }
 }

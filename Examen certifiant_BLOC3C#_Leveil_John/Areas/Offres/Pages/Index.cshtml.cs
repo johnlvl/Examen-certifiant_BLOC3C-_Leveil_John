@@ -25,7 +25,7 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages
         [BindProperty]
         public Offre Offres { get; set; }
 
-        public IList<Offre> Offre { get;set; } = default!;
+        public IList<Offre> Offre { get;set; } = new List<Offre>();
 
         public async Task OnGetAsync()
         {
@@ -47,7 +47,7 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages
             if (utilisateur == null)
             {
                 // L'utilisateur n'est pas authentifié
-                return RedirectToPage("/Account/Login"); // Redirige vers la page de connexion
+                return Redirect("/Identity/Account/Login");
             }
 
             // Vérifie si l'utilisateur a déjà un panier
@@ -65,7 +65,7 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages
             panier.OffresPanier.Add(offre);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("/Panier/Index");
+            return Redirect("/Paniers");
         }
     }
 }
