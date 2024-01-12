@@ -14,58 +14,44 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages
     public class IndexModel : PageModel
     {
         private readonly Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext _context;
-        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IndexModel(Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public IndexModel(Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
         {
             _context = context;
-            _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        [BindProperty]
-        public Offre Offres { get; set; }
-
-        public IList<Offre> Offre { get;set; } = new List<Offre>();
+        public List<Offre> Offres { get; set; }
 
         public async Task OnGetAsync()
         {
-            Offre = await _context.Offres.ToListAsync();
+            Offres = await _context.Offres.ToListAsync();
         }
 
-        public async Task<IActionResult> OnPostAjouterAuPanierAsync(int id)
+        public IActionResult OnPostAjouterAuPanier(int ID)
         {
-            var offre = await _context.Offres.FindAsync(id);
+            // Récupére le panier de la session
+            var panier = _httpContextAccessor.HttpContext.Session.GetPanier();
 
+            // Trouve l'offre dans la base de données
+            var offre = _context.Offres.FirstOrDefault(o => o.ID == ID);
+
+            // Vérifie si l'offre a été trouvée
             if (offre == null)
             {
+                // L'offre n'est pas trouvée (redirection, message d'erreur, etc.)
                 return NotFound();
-            }
-
-            // Récupère l'utilisateur actuel
-            var utilisateur = await _userManager.GetUserAsync(User);
-
-            if (utilisateur == null)
-            {
-                // L'utilisateur n'est pas authentifié
-                return Redirect("/Identity/Account/Login");
-            }
-
-            // Vérifie si l'utilisateur a déjà un panier
-            var panier = await _context.Paniers.FirstOrDefaultAsync(p => p.UtilisateurId == utilisateur.Id);
-
-            if (panier == null)
-            {
-                // Si l'utilisateur n'a pas de panier, créez-en un nouveau
-                panier = new Panier { UtilisateurId = utilisateur.Id };
-                _context.Paniers.Add(panier);
-                await _context.SaveChangesAsync();
             }
 
             // Ajoute l'offre au panier
             panier.OffresPanier.Add(offre);
-            await _context.SaveChangesAsync();
 
-            return Redirect("/Paniers");
+            // Met à jour le panier dans la session
+            _httpContextAccessor.HttpContext.Session.SetPanier(panier);
+
+            return RedirectToPage();
         }
+
     }
 }

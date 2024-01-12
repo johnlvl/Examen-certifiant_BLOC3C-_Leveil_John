@@ -12,7 +12,7 @@
 <div class="py-5">
     <div class="container">
         <div class="row">
-            @foreach (var item in Model.Offre)
+            @foreach (var item in Model.Offres)
             {
                 <form method="post" asp-page-handler="AjouterAuPanier" asp-route-id="@item.ID">
                     <div class="col-md-4">
@@ -24,13 +24,10 @@
                                 <div class="col-4 text-right">
                                     <h2 class="mb-0"><b>@Html.DisplayFor(modelItem => item.Prix)</b></h2>
                                 </div>
-                                <div>
-                                    <label asp-for="Offres.Quantite">Quantité :</label>
-                                    <input asp-for="Offres.Quantite" class="form-control" type="number" value="1" />
-                                </div>
                             </div>
-                            <input type="hidden" asp-for="Offres.ID" value="@item.ID" />
-                            <button type="submit" class="btn btn-primary mt-3">Ajouter au panier</button>
+                            <form method="post" asp-page-handler="AjouterAuPanier" asp-route-offreId="@item.ID">
+                                <button type="submit" class="btn btn-primary mt-3">Ajouter au Panier</button>
+                            </form>
                             <a asp-page="./Edit" asp-route-id="@item.ID">Editer</a> |
                             <a asp-page="./Details" asp-route-id="@item.ID">Détails</a> |
                             <a asp-page="./Delete" asp-route-id="@item.ID">Supprimer</a>

@@ -9,10 +9,8 @@
 <h1>Panier</h1>
 
 
-@if (Model.Panier != null && Model.Panier.Any())
+@if (Model.Paniers != null)
 {
-    @foreach (var panier in Model.Panier)
-    {
         <table class="table">
             <thead>
                 <tr>
@@ -23,18 +21,18 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var offre in panier.OffresPanier)
+                @foreach (var offre in Model.Paniers.OffresPanier)
                 {
                     <tr>
                         <td>@offre.TypeOffre</td>
-                        <td>@offre.Quantite</td>
                         <td>@offre.Description</td>
                         <td>@offre.Prix</td>
+                        <td> <button asp-page="./Delete" asp-route-id="@offre.ID">Supprimer</button> </td>
                     </tr>
-                }
+                
+            }
             </tbody>
         </table>
-    }
 }
 else
 {

@@ -4,6 +4,7 @@ using Examen_certifiant_BLOC3C__Leveil_John.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240112112342_AjoutRelationOffreEtPanier")]
+    partial class AjoutRelationOffreEtPanier
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -117,11 +120,14 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("PanierID")
+                    b.Property<int>("PanierId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Prix")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantite")
+                        .HasColumnType("int");
 
                     b.Property<string>("TypeOffre")
                         .IsRequired()
@@ -129,7 +135,7 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("PanierID");
+                    b.HasIndex("PanierId");
 
                     b.ToTable("Offres");
                 });
@@ -335,7 +341,9 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                 {
                     b.HasOne("Examen_certifiant_BLOC3C__Leveil_John.Models.Panier", "Panier")
                         .WithMany("OffresPanier")
-                        .HasForeignKey("PanierID");
+                        .HasForeignKey("PanierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Panier");
                 });

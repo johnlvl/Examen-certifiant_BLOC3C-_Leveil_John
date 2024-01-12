@@ -11,10 +11,10 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Models
         [DataType(DataType.Currency)]
         public decimal Prix { get; set; }
 
-        public int Quantite { get; set; }
-
         [Required]
         public string Description { get; set; }
+
+        public Panier? Panier { get; set; }
 
     }
 }
