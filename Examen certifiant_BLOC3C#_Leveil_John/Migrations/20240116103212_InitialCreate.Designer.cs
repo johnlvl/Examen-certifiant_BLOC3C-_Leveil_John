@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240108085907_AjoutChampsAspNetUsers")]
-    partial class AjoutChampsAspNetUsers
+    [Migration("20240116103212_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,6 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CleCompte")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -66,6 +65,9 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<int?>("PanierId")
+                        .HasColumnType("int");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
@@ -101,38 +103,9 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
+                    b.HasIndex("PanierId");
+
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("Examen_certifiant_BLOC3C__Leveil_John.Models.Client", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("Age")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ClefClient")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CompteId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Nom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Prenom")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Examen_certifiant_BLOC3C__Leveil_John.Models.Offre", b =>
@@ -143,6 +116,13 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PanierID")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Prix")
                         .HasColumnType("decimal(18,2)");
 
@@ -151,6 +131,8 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("PanierID");
 
                     b.ToTable("Offres");
                 });
@@ -166,9 +148,11 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                     b.Property<int>("ClientId")
                         .HasColumnType("int");
 
-                    b.HasKey("ID");
+                    b.Property<string>("UtilisateurId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasIndex("ClientId");
+                    b.HasKey("ID");
 
                     b.ToTable("Paniers");
                 });
@@ -185,8 +169,8 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ClientId")
-                        .HasColumnType("int");
+                    b.Property<string>("ClientIdId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("OffreId")
                         .HasColumnType("int");
@@ -197,7 +181,7 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
 
                     b.HasKey("ID");
 
-                    b.HasIndex("ClientId");
+                    b.HasIndex("ClientIdId");
 
                     b.HasIndex("OffreId");
 
@@ -341,24 +325,29 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Examen_certifiant_BLOC3C__Leveil_John.Models.Panier", b =>
+            modelBuilder.Entity("Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationUser", b =>
                 {
-                    b.HasOne("Examen_certifiant_BLOC3C__Leveil_John.Models.Client", "Client")
+                    b.HasOne("Examen_certifiant_BLOC3C__Leveil_John.Models.Panier", "Panier")
                         .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PanierId");
 
-                    b.Navigation("Client");
+                    b.Navigation("Panier");
+                });
+
+            modelBuilder.Entity("Examen_certifiant_BLOC3C__Leveil_John.Models.Offre", b =>
+                {
+                    b.HasOne("Examen_certifiant_BLOC3C__Leveil_John.Models.Panier", "Panier")
+                        .WithMany("OffresPanier")
+                        .HasForeignKey("PanierID");
+
+                    b.Navigation("Panier");
                 });
 
             modelBuilder.Entity("Examen_certifiant_BLOC3C__Leveil_John.Models.Reservation", b =>
                 {
-                    b.HasOne("Examen_certifiant_BLOC3C__Leveil_John.Models.Client", "Client")
+                    b.HasOne("Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationUser", "ClientId")
                         .WithMany()
-                        .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ClientIdId");
 
                     b.HasOne("Examen_certifiant_BLOC3C__Leveil_John.Models.Offre", "Offre")
                         .WithMany()
@@ -366,7 +355,7 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Client");
+                    b.Navigation("ClientId");
 
                     b.Navigation("Offre");
                 });
@@ -420,6 +409,11 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Examen_certifiant_BLOC3C__Leveil_John.Models.Panier", b =>
+                {
+                    b.Navigation("OffresPanier");
                 });
 #pragma warning restore 612, 618
         }
