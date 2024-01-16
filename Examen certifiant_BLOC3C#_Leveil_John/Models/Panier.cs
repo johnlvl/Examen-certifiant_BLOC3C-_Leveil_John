@@ -8,6 +8,7 @@
 
         public string UtilisateurId { get; set; } 
 
-        public List<Offre> OffresPanier { get; set; } = new List<Offre>();
+        // Propriété de navigation
+        public ICollection<Offre> Offres { get; set; } = new List<Offre>();
     }
 }

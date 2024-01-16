@@ -14,7 +14,7 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Models
         [Required]
         public string Description { get; set; }
 
-        public Panier? Panier { get; set; }
-
+        // Propriété de navigation
+        public ICollection<Panier> Paniers { get; set; } = new List<Panier>();
     }
 }
