@@ -14,38 +14,34 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Paniers.Pages
     public class IndexModel : PageModel
     {
         private readonly Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public IndexModel(Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext context, IHttpContextAccessor httpContextAccessor)
+        public IndexModel(Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext context)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
         }
 
         [BindProperty]
         public Panier Paniers { get; set; }
 
-        public IList<Panier> Panier { get;set; } = default!;
+        public List<Offre> PanierArticle { get; set; } = new List<Offre>();
+
 
         public async Task OnGetAsync()
         {
-            // Récupère l'ID de l'utilisateur actuellement connecté
-            var utilisateurId = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            // Récupère le panier de l'utilisateur connecté
-            Paniers = await _context.Paniers.Include(p => p.OffresPanier).FirstOrDefaultAsync(p => p.UtilisateurId == utilisateurId);
-
-            // Si le panier n'existe pas, crée un nouveau panier
-            if (Paniers == null)
+            // Vérifie si l'utilisateur est authentifié
+            if (!User.Identity.IsAuthenticated)
             {
-                Paniers = new Panier
-                {
-                    UtilisateurId = utilisateurId
-                };
-
-                _context.Paniers.Add(Paniers);
-                await _context.SaveChangesAsync();
+                // Redirige vers la page de connexion si l'utilisateur n'est pas authentifié
+                Response.Redirect("/Identity/Account/Login");
+                return;
             }
+
+            // Récupère le dictionnaire du panier depuis la session
+            var panier = HttpContext.Session.GetPanierArticle();
+
+            // Récupère les offres du panier à partir de la base de données
+            var offreSelectionneeIds = panier.Keys.ToList();
+            PanierArticle = await _context.Offres.Where(offre => offreSelectionneeIds.Contains(offre.ID)).ToListAsync();
         }
     }
 }

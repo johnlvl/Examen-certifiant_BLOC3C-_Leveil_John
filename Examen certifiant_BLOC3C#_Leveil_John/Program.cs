@@ -20,6 +20,7 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
+    options.Cookie.Name = "JO2024";
 });
 
 // Ajout de l'injection de dépendances pour IHttpContextAccessor

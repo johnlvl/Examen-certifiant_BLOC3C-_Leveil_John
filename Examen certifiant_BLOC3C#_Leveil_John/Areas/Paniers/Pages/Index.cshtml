@@ -1,4 +1,5 @@
 ﻿@page
+@using Examen_certifiant_BLOC3C__Leveil_John.Data
 @model Examen_certifiant_BLOC3C__Leveil_John.Areas.Paniers.Pages.IndexModel
 
 @{
@@ -6,35 +7,30 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-<h1>Panier</h1>
-
-
-@if (Model.Paniers != null)
-{
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Type d'Offre</th>
-                    <th>Quantité</th>
-                    <th>Description</th>
-                    <th>Prix</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var offre in Model.Paniers.OffresPanier)
-                {
-                    <tr>
-                        <td>@offre.TypeOffre</td>
-                        <td>@offre.Description</td>
-                        <td>@offre.Prix</td>
-                        <td> <button asp-page="./Delete" asp-route-id="@offre.ID">Supprimer</button> </td>
-                    </tr>
-                
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="text-center mx-auto col-md-12">
+                <h1>Panier</h1>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var offre in Model.PanierArticle)
+            {
+                <div class="col-lg-3 col-md-6 p-3">
+                    <div class="card bg-light text-center">
+                        <div class="card-body p-4">
+                            <h2>@offre.TypeOffre</h2>
+                            <h3> <b>@offre.Prix €</b> </h3>
+                            <hr>
+                            <ul class="list-unstyled my-3">
+                                <li class="mb-1">@offre.Description</li>
+                                <li class="mb-1"> Quantité : @HttpContext.Session.GetPanierArticle()[offre.ID]</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
             }
-            </tbody>
-        </table>
-}
-else
-{
-    <p>Le panier est vide.</p>
-}
+        </div>
+    </div>
+</div>
