@@ -1,9 +1,8 @@
-﻿using Examen_certifiant_BLOC3C__Leveil_John.Models;
-using System.Text.Json;
+﻿using System.Text.Json;
 
-namespace Examen_certifiant_BLOC3C__Leveil_John.Data
+namespace Examen_certifiant_BLOC3C__Leveil_John.Services.PanierService
 {
-    public static class SessionExtensions
+    public static class PanierService
     {
         private const string PanierKey = "Panier";
 
