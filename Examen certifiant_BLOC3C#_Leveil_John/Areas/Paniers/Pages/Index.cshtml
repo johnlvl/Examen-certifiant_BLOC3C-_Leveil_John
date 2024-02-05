@@ -36,7 +36,11 @@
                 @if (Model.PanierArticle.Any())
                 {
                     <h4>Montant total du panier : @Model.MontantTotal.ToString("C")</h4>
-                    <button id="Bouton-Paiement" type="submit" class="btn btn-primary">Paiement</button>
+
+                    <form method="post" asp-page-handler="ProcessPaiement">
+                        <button type="submit">Paiement</button>
+                    </form>
+
                 }
                 else
                 {

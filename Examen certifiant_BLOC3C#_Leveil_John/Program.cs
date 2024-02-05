@@ -1,4 +1,5 @@
 using Examen_certifiant_BLOC3C__Leveil_John.Data;
+using Examen_certifiant_BLOC3C__Leveil_John.Services.PaimentService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,9 @@ builder.Services.AddSession(options =>
 
 // Ajout de l'injection de dépendances pour IHttpContextAccessor
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+// Ajout de service PaiementService
+builder.Services.AddScoped<PaimentService>();
 
 var app = builder.Build();
 
