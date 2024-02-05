@@ -22,6 +22,14 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages
             Offres = await _context.Offres.ToListAsync();
         }
 
+        /// <summary>
+        /// Gère la soumission du formulaire pour ajouter une offre au panier.
+        /// </summary>
+        /// <param name="id">L'ID de l'offre à ajouter au panier.</param>
+        /// <returns>
+        /// - Retourne une réponse NotFound si l'offre n'existe pas en base.
+        /// - Ajoute l'offre au panier dans la session et redirige vers la page "Paniers".
+        /// </returns>
         public IActionResult OnPostAjouterAuPanier(int id)
         {
             // Check si l'offre existe en base
