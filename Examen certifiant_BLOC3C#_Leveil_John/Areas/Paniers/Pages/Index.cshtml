@@ -1,5 +1,6 @@
 ﻿@page
 @using Examen_certifiant_BLOC3C__Leveil_John.Data
+@using Examen_certifiant_BLOC3C__Leveil_John.Services.PanierService
 @model Examen_certifiant_BLOC3C__Leveil_John.Areas.Paniers.Pages.IndexModel
 
 @{
@@ -31,6 +32,18 @@
                     </div>
                 </div>
             }
+            <div class="col-md-12 text-center">
+                @if (Model.PanierArticle.Any())
+                {
+                    <h4>Montant total du panier : @Model.MontantTotal.ToString("C")</h4>
+                    <button id="Bouton-Paiement" type="submit" class="btn btn-primary">Paiement</button>
+                }
+                else
+                {
+                    <h4>Votre panier est vide</h4>
+                }
+            </div>
+
         </div>
     </div>
 </div>

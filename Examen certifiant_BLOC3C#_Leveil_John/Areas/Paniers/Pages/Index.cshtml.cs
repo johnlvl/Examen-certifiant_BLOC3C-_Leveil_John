@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Examen_certifiant_BLOC3C__Leveil_John.Models;
+using Examen_certifiant_BLOC3C__Leveil_John.Services.PanierService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Examen_certifiant_BLOC3C__Leveil_John.Data;
-using Examen_certifiant_BLOC3C__Leveil_John.Models;
-using System.Security.Claims;
 
 namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Paniers.Pages
 {
@@ -24,6 +19,8 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Paniers.Pages
         public Panier Paniers { get; set; }
 
         public List<Offre> PanierArticle { get; set; } = new List<Offre>();
+
+        public decimal MontantTotal { get; set; }
 
 
         public async Task OnGetAsync()
@@ -42,6 +39,16 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Paniers.Pages
             // Récupère les offres du panier à partir de la base de données
             var offreSelectionneeIds = panier.Keys.ToList();
             PanierArticle = await _context.Offres.Where(offre => offreSelectionneeIds.Contains(offre.ID)).ToListAsync();
+
+            // Calcule le montant total
+            decimal montantTotal = 0;
+            foreach (var offre in PanierArticle)
+            {
+                montantTotal += offre.Prix * panier[offre.ID];
+            }
+
+            // Stocke le montant total dans la propriété MontantTotal du Panier
+            MontantTotal = montantTotal;
         }
     }
 }
