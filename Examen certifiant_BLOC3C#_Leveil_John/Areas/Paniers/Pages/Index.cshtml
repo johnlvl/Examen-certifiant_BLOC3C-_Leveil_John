@@ -1,0 +1,53 @@
+﻿@page
+@using Examen_certifiant_BLOC3C__Leveil_John.Data
+@using Examen_certifiant_BLOC3C__Leveil_John.Services.PanierService
+@model Examen_certifiant_BLOC3C__Leveil_John.Areas.Paniers.Pages.IndexModel
+
+@{
+    ViewData["Title"] = "Panier";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="text-center mx-auto col-md-12">
+                <h1>Panier</h1>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var offre in Model.PanierArticle)
+            {
+                <div class="col-lg-3 col-md-6 p-3">
+                    <div class="card bg-light text-center">
+                        <div class="card-body p-4">
+                            <h2>@offre.TypeOffre</h2>
+                            <h3> <b>@offre.Prix €</b> </h3>
+                            <hr>
+                            <ul class="list-unstyled my-3">
+                                <li class="mb-1">@offre.Description</li>
+                                <li class="mb-1"> Quantité : @HttpContext.Session.GetPanierArticle()[offre.ID]</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="col-md-12 text-center">
+                @if (Model.PanierArticle.Any())
+                {
+                    <h4>Montant total du panier : @Model.MontantTotal.ToString("C")</h4>
+
+                    <form method="post" asp-page-handler="ProcessPaiement">
+                        <button type="submit">Paiement</button>
+                    </form>
+
+                }
+                else
+                {
+                    <h4>Votre panier est vide</h4>
+                }
+            </div>
+
+        </div>
+    </div>
+</div>

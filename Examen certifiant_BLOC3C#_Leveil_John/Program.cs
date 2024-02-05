@@ -1,4 +1,5 @@
 using Examen_certifiant_BLOC3C__Leveil_John.Data;
+using Examen_certifiant_BLOC3C__Leveil_John.Services.PaimentService;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +14,21 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
+
+// Ajout des services pour la gestion des sessions
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+    options.Cookie.Name = "JO2024";
+});
+
+// Ajout de l'injection de dépendances pour IHttpContextAccessor
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+// Ajout de service PaiementService
+builder.Services.AddScoped<PaimentService>();
 
 var app = builder.Build();
 
@@ -34,6 +50,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// Ajout de l'utilisation de la session
+app.UseSession();
 
 app.MapRazorPages();
 

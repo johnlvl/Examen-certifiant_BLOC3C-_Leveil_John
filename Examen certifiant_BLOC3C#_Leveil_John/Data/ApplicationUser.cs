@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Examen_certifiant_BLOC3C__Leveil_John.Models;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
 namespace Examen_certifiant_BLOC3C__Leveil_John.Data
@@ -14,5 +15,9 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Data
         public string Prenom { get; set; }
 
         public string? CleCompte { get; set; }
+
+        public int? PanierId { get; set; }
+
+        public Panier? Panier { get; set; }
     }
 }

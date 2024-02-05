@@ -5,5 +5,10 @@
         public int ID { get; set; }
 
         public int ClientId { get; set; }
+
+        public string UtilisateurId { get; set; } 
+
+        // Propriété de navigation
+        public ICollection<Offre> Offres { get; set; } = new List<Offre>();
     }
 }
