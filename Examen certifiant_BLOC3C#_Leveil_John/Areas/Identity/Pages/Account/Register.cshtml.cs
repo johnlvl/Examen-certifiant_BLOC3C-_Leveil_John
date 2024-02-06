@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using System.Security.Cryptography;
 
 namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Identity.Pages.Account
 {
@@ -124,6 +125,24 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                // Concaténe le nom, prénom et e-mail de l'utilisateur
+                var infosUtilisateur = $"{Input.Nom}{Input.Prenom}{Input.Email}";
+
+                // Utilise SHA-256 pour hacher les informations de l'utilisateur
+                using (SHA256 sha256Hash = SHA256.Create())
+                {
+                    byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(infosUtilisateur));
+                    StringBuilder builder = new StringBuilder();
+                    for (int i = 0; i < bytes.Length; i++)
+                    {
+                        builder.Append(bytes[i].ToString("x2"));
+                    }
+                    string cleHashe = builder.ToString();
+
+                    // Assigne la clé hachée à la colonne CleCompte
+                    user.CleCompte = cleHashe;
+                }
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
