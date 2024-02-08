@@ -61,6 +61,10 @@ namespace  Examen_certifiant_BLOC3C__Leveil_John.Areas.Identity.Pages.Account.Ma
         /// </summary>
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
 
+        public static string Reservation => "Réservation";
+
+        public static string ReservationNavClass(ViewContext viewContext) => PageNavClass(viewContext, Reservation);
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.

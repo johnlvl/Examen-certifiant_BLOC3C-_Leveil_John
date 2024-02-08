@@ -1,6 +1,6 @@
 using Examen_certifiant_BLOC3C__Leveil_John.Data;
 using Examen_certifiant_BLOC3C__Leveil_John.Services.PaimentService;
-using Microsoft.AspNetCore.Identity;
+using Examen_certifiant_BLOC3C__Leveil_John.Services.QrCodeService;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +29,9 @@ builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 // Ajout de service PaiementService
 builder.Services.AddScoped<PaimentService>();
+
+// Ajout du service QrCodeService
+builder.Services.AddTransient<QrCodeService>();
 
 var app = builder.Build();
 
