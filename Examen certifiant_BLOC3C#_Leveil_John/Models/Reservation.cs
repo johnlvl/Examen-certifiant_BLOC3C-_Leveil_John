@@ -16,4 +16,6 @@ public class Reservation
 
     public virtual Offre Offre { get; set; }
 
+    public byte[] QrCodeImageData { get; set; }
+
 }

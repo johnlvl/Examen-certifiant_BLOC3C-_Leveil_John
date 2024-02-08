@@ -79,8 +79,6 @@ public class IndexModel : PageModel
                 reservation.ClientId = userId;
                 reservation.StatutPaiement = "OK";
 
-                _context.Reservations.Add(reservation);
-
                 if (user != null && !string.IsNullOrEmpty(user.CleCompte))
                 {
                     var cleCompte = user.CleCompte;
@@ -88,8 +86,10 @@ public class IndexModel : PageModel
                     // Génére le QR code et le stocke dans la liste
                     byte[] qrCodeImage = _qrCodeService.GenerateQrCode(cleCompte, clePaiement);
                     qrCodeImages.Add(qrCodeImage);
+                    reservation.QrCodeImageData = qrCodeImage;
                 }
 
+                _context.Reservations.Add(reservation);
             }
             // Affecte la liste des images des QR codes à la propriété correspondante
             QrCodeImages = qrCodeImages;
@@ -100,7 +100,8 @@ public class IndexModel : PageModel
         }
         catch (Exception ex)
         {
-            throw new ArgumentException("Erreur lors du paiement. Veuillez réssayer.");
+            ModelState.AddModelError("", "Une erreur s'est produite lors du traitement de votre demande. Veuillez réessayer plus tard.");
+            return Page();
         }
     }
 
