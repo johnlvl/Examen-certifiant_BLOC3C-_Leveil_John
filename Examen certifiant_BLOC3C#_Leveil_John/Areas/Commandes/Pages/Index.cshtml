@@ -12,9 +12,28 @@
                 <h1>Commandes réussi</h1>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12 text-center">
-               
+
+        <div class="col-md-12 text-center">
+            <div class="row justify-content-center">
+                @if (Model.QrCodeImages != null && Model.PanierArticle != null)
+                {
+                    @for (int i = 0; i < Model.QrCodeImages.Count; i++)
+                    {
+                        <div class="col-lg-3 col-md-6 p-3">
+                            <div class="card bg-light text-center mx-auto">
+                                <div class="card-body p-4">
+                                    <h2>@Model.PanierArticle[i].TypeOffre</h2> <!-- Affiche le type d'offre -->
+                                    <hr>
+                                    <img class="img-fluid img-thumbnail" style="max-width:100%;height: auto;max-height: 100%;" src="data:image/png;base64,@Convert.ToBase64String(Model.QrCodeImages[i])" alt="QR Code">
+
+                                    <ul class="list-unstyled my-3">
+                                        <li class="mb-1">@Model.PanierArticle[i].Description</li> <!-- Affiche la description de l'offre -->
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
             </div>
         </div>
     </div>

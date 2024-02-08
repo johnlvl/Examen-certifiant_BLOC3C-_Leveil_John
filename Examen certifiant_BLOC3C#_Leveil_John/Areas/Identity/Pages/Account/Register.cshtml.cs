@@ -129,9 +129,9 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Identity.Pages.Account
                 // Concaténe le nom, prénom et e-mail de l'utilisateur
                 var infosUtilisateur = $"{Input.Nom};{Input.Prenom};{Input.Email};";
 
-                    // Assigne la clé hachée à la colonne CleCompte
-                    user.CleCompte = infosUtilisateur;
-                
+                // Assigne la clé hachée à la colonne CleCompte
+                user.CleCompte = infosUtilisateur;
+
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
