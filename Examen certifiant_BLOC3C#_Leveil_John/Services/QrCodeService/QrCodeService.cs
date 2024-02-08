@@ -5,6 +5,12 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Services.QrCodeService;
 
 public class QrCodeService
 {
+    /// <summary>
+    /// Génère un code QR à partir des clés de compte et de paiement spécifiées et le retourne sous forme de tableau de bytes.
+    /// </summary>
+    /// <param name="cleCompte">La clé de compte associée à l'utilisateur.</param>
+    /// <param name="clePaiement">La clé de paiement unique générée.</param>
+    /// <returns>Le Qr code généré sous forme de tableau de bytes.</returns>
     public byte[] GenerateQrCode(string cleCompte, string clePaiement)
     {
         // Concaténe les clés

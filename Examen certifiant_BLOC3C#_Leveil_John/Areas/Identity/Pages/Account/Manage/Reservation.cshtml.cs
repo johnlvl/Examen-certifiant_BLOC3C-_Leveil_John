@@ -19,6 +19,10 @@ public class ReservationModel : PageModel
 
     public List<Reservation> Reservations { get; set; }
 
+    /// <summary>
+    /// Traite la demande GET pour afficher les réservations de l'utilisateur actuellement connecté.
+    /// </summary>
+    /// <returns>La page de réservations avec les réservations de l'utilisateur.</returns>
     public async Task<IActionResult> OnGetAsync()
     {
         // Récupére l'utilisateur actuellement connecté

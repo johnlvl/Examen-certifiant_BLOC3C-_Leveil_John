@@ -30,6 +30,13 @@ public class IndexModel : PageModel
 
     public List<byte[]> QrCodeImages { get; set; }
 
+    /// <summary>
+    /// Traite la demande GET pour passer une commande.
+    /// </summary>
+    /// <returns>
+    /// - Redirige vers la page de commande après avoir enregistré les informations de la commande pour afficher le QrCode associé.
+    /// - Affiche un message d'erreur si une erreur survient lors du traitement de la demande.
+    /// </returns>
     public async Task<IActionResult> OnGetAsync()
     {
         try
@@ -106,6 +113,11 @@ public class IndexModel : PageModel
     }
 
 
+    /// <summary>
+    /// Génère une clé unique de paiement en concaténant l'ID et le nom de l'offre.
+    /// </summary>
+    /// <param name="offre">L'offre pour laquelle générer la clé de paiement.</param>
+    /// <returns>La clé unique de paiement générée.</returns>
     private string GenereClePaiement(Offre offre)
     {
         // Concaténe l'ID de l'offre et le nom de l'offre pour former la clé unique
