@@ -8,70 +8,71 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Examen_certifiant_BLOC3C__Leveil_John.Data;
 using Examen_certifiant_BLOC3C__Leveil_John.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages
+namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages;
+
+[Authorize("AdministrateurUniquement")]
+public class EditModel : PageModel
 {
-    public class EditModel : PageModel
-    {
-        private readonly Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext _context;
+    private readonly Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext _context;
 
-        public EditModel(Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext context)
+    public EditModel(Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext context)
+    {
+        _context = context;
+    }
+
+    [BindProperty]
+    public Offre Offre { get; set; } = default!;
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        [BindProperty]
-        public Offre Offre { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        var offre =  await _context.Offres.FirstOrDefaultAsync(m => m.ID == id);
+        if (offre == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        Offre = offre;
+        return Page();
+    }
 
-            var offre =  await _context.Offres.FirstOrDefaultAsync(m => m.ID == id);
-            if (offre == null)
-            {
-                return NotFound();
-            }
-            Offre = offre;
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task<IActionResult> OnPostAsync()
+    {
+        if (!ModelState.IsValid)
+        {
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        _context.Attach(Offre).State = EntityState.Modified;
+
+        try
         {
-            if (!ModelState.IsValid)
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!OffreExists(Offre.ID))
             {
-                return Page();
+                return NotFound();
             }
-
-            _context.Attach(Offre).State = EntityState.Modified;
-
-            try
+            else
             {
-                await _context.SaveChangesAsync();
+                throw;
             }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OffreExists(Offre.ID))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
         }
 
-        private bool OffreExists(int id)
-        {
-            return _context.Offres.Any(e => e.ID == id);
-        }
+        return RedirectToPage("./Index");
+    }
+
+    private bool OffreExists(int id)
+    {
+        return _context.Offres.Any(e => e.ID == id);
     }
 }

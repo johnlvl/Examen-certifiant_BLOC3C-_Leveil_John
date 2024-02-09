@@ -7,37 +7,38 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Examen_certifiant_BLOC3C__Leveil_John.Data;
 using Examen_certifiant_BLOC3C__Leveil_John.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages
+namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages;
+
+[Authorize("AdministrateurUniquement")]
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext _context;
+
+    public DetailsModel(Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext context)
     {
-        private readonly Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public DetailsModel(Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext context)
+    public Offre Offre { get; set; } = default!;
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        public Offre Offre { get; set; } = default!;
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        var offre = await _context.Offres.FirstOrDefaultAsync(m => m.ID == id);
+        if (offre == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var offre = await _context.Offres.FirstOrDefaultAsync(m => m.ID == id);
-            if (offre == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                Offre = offre;
-            }
-            return Page();
+            return NotFound();
         }
+        else
+        {
+            Offre = offre;
+        }
+        return Page();
     }
 }

@@ -1,5 +1,6 @@
 ﻿@page
 @model Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages.IndexModel;
+@using System.Security.Claims
 
 @{
     ViewData["Title"] = "Index";
@@ -15,22 +16,25 @@
             @foreach (var item in Model.Offres)
             {
                 <form method="post" asp-page-handler="AjouterAuPanier" asp-route-id="@item.ID">
-                    <div class="col-md-4">
+                    <div>
                         <div class="card-body p-4">
                             <div class="row">
                                 <div class="col-8">
                                     <h3 class="mb-0">@Html.DisplayFor(modelItem => item.TypeOffre)</h3>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <h2 class="mb-0"><b>@Html.DisplayFor(modelItem => item.Prix)</b></h2>
+                                    <h2 class="mb-0 text-nowrap"><b>@Html.DisplayFor(modelItem => item.Prix)</b></h2>
                                 </div>
                             </div>
                             <form method="post" asp-page-handler="AjouterAuPanier" asp-route-offreId="@item.ID">
                                 <button type="submit" class="btn btn-primary mt-3">Ajouter au Panier</button>
                             </form>
-                            <a asp-page="./Edit" asp-route-id="@item.ID">Editer</a> |
-                            <a asp-page="./Details" asp-route-id="@item.ID">Détails</a> |
-                            <a asp-page="./Delete" asp-route-id="@item.ID">Supprimer</a>
+                            @if (User.Identity.IsAuthenticated && User.FindFirst(ClaimTypes.NameIdentifier)?.Value == "6ce3ecae-1eb1-4181-86d2-9c4eaec24539")
+                            {
+                                <a asp-page="./Edit" asp-route-id="@item.ID">Editer</a>
+                                <a asp-page="./Details" asp-route-id="@item.ID">Détails</a>
+                                <a asp-page="./Delete" asp-route-id="@item.ID">Supprimer</a>
+                            }
                         </div>
                     </div>
                 </form>

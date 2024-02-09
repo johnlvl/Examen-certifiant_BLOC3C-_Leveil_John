@@ -1,6 +1,9 @@
 using Examen_certifiant_BLOC3C__Leveil_John.Data;
+using Examen_certifiant_BLOC3C__Leveil_John.Services.AdminService;
 using Examen_certifiant_BLOC3C__Leveil_John.Services.PaimentService;
 using Examen_certifiant_BLOC3C__Leveil_John.Services.QrCodeService;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +29,24 @@ builder.Services.AddSession(options =>
 
 // Ajout de l'injection de dépendances pour IHttpContextAccessor
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddControllersWithViews();
+// Ajout du service AdminIdRequirementHandler en lui passant l'ID de l'administrateur
+builder.Services.AddScoped<IAuthorizationHandler>(provider => new AdminService("6ce3ecae-1eb1-4181-86d2-9c4eaec24539"));
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdministrateurUniquement", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.Requirements.Add(new OperationAuthorizationRequirement { Name = "AdministrateurUniquement" });
+    });
+});
+
+builder.Services.AddRazorPages(options =>
+{
+    options.Conventions.AuthorizeFolder("/Administrateur", "AdministrateurUniquement");
+});
 
 // Ajout de service PaiementService
 builder.Services.AddScoped<PaimentService>();
