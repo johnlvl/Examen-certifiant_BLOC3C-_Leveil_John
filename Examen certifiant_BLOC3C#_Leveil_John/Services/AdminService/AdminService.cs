@@ -15,6 +15,17 @@ public class AdminService : AuthorizationHandler<OperationAuthorizationRequireme
         _adminUserId = adminUserId;
     }
 
+    /// <summary>
+    /// Gère la vérification des autorisations pour l'opération spécifiée.
+    /// </summary>
+    /// <param name="context">Le contexte d'autorisation.</param>
+    /// <param name="requirement">Le requirement d'autorisation.</param>
+    /// <returns>
+    /// - Si l'utilisateur n'est pas authentifié, la vérification de l'autorisation échoue.
+    /// - Si l'ID de l'utilisateur n'est pas trouvé dans les revendications, la vérification de l'autorisation échoue.
+    /// - Si l'ID de l'utilisateur correspond à l'ID de l'administrateur, l'accès est autorisé.
+    /// - Sinon, la vérification de l'autorisation échoue.
+    /// </returns>
     protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, OperationAuthorizationRequirement requirement)
     {
         // Vérifie si l'utilisateur est authentifié

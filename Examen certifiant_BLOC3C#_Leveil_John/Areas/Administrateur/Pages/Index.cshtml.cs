@@ -31,16 +31,24 @@ public class IndexModel : PageModel
         return Page();
     }
 
+    /// <summary>
+    /// Calcule le total des commandes par type d'offre et retourne un dictionnaire associant chaque type d'offre à son nombre de commandes.
+    /// </summary>
+    /// <returns>Un dictionnaire contenant le nombre total de commandes par type d'offre.</returns>
     public Dictionary<string, int> GetTotalCommandeParOffre()
     {
         CommandesParOffre = _context.Reservations
-            .Include(r => r.Offre) // Charger l'offre associée
-            .GroupBy(r => r.Offre.TypeOffre) // Grouper par type d'offre
-            .ToDictionary(g => g.Key, g => g.Count()); // Compter le nombre de commandes par type d'offre
+            .Include(r => r.Offre) // Charge l'offre associée
+            .GroupBy(r => r.Offre.TypeOffre) // Groupe par type d'offre
+            .ToDictionary(g => g.Key, g => g.Count()); // Compte le nombre de commandes par type d'offre
 
         return CommandesParOffre;
     }
 
+    /// <summary>
+    /// Calcule le nombre total de commandes enregistrées.
+    /// </summary>
+    /// <returns>Le nombre total de commandes enregistrées.</returns>
     public int GetTotalCommande()
     {
         TotalCommandes = _context.Reservations.Count();
@@ -48,6 +56,10 @@ public class IndexModel : PageModel
         return TotalCommandes;
     }
 
+    /// <summary>
+    /// Calcule le nombre total d'utilisateurs enregistrés.
+    /// </summary>
+    /// <returns>Le nombre total d'utilisateurs enregistrés.</returns>
     public int GetTotalUtilisateur()
     {
         TotalUtilisateurs = _context.Users.Count();
