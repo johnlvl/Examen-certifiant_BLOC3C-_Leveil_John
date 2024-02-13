@@ -1,0 +1,65 @@
+﻿@page
+@model Examen_certifiant_BLOC3C__Leveil_John.Areas.Administrateur.Pages.IndexModel
+@{
+    ViewData["Title"] = "Administrateur";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="text-center mx-auto col-md-12">
+        <h1>Administrateur</h1>
+    </div>
+</div>
+
+<div class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="row">
+                    @if (Model.CommandesParOffre.Count != 0)
+                    {
+                        @foreach (var kvp in Model.CommandesParOffre)
+                        {
+                            <div class="col-md-4" style="">
+                                <h6 class="">Offre @kvp.Key :</h6>
+                            </div>
+                            <div class="col-md-6">
+                                <h6 class="">@kvp.Value commandes</h6>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <h6>Aucune commandes.</h6>
+                    }
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="">Nombre d'utilisateur :</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="">@Model.TotalUtilisateurs</h6>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="">Nombre de commande total :</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="">@Model.TotalCommandes commandes</h6>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="text-center mx-auto col-md-12">
+        <a class="nav-link" href="/Offres"><h3>Ajouter/Modifier/Supprimer une offre</h3></a>
+    </div>
+</div>

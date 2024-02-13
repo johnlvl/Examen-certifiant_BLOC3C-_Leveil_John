@@ -7,57 +7,58 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Examen_certifiant_BLOC3C__Leveil_John.Data;
 using Examen_certifiant_BLOC3C__Leveil_John.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages
+namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Offres.Pages;
+
+[Authorize("AdministrateurUniquement")]
+public class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
+    private readonly Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext _context;
+
+    public DeleteModel(Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext context)
     {
-        private readonly Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext _context;
+        _context = context;
+    }
 
-        public DeleteModel(Examen_certifiant_BLOC3C__Leveil_John.Data.ApplicationDbContext context)
+    [BindProperty]
+    public Offre Offre { get; set; } = default!;
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        if (id == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        [BindProperty]
-        public Offre Offre { get; set; } = default!;
+        var offre = await _context.Offres.FirstOrDefaultAsync(m => m.ID == id);
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        if (offre == null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            return NotFound();
+        }
+        else
+        {
+            Offre = offre;
+        }
+        return Page();
+    }
 
-            var offre = await _context.Offres.FirstOrDefaultAsync(m => m.ID == id);
-
-            if (offre == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                Offre = offre;
-            }
-            return Page();
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        var offre = await _context.Offres.FindAsync(id);
+        if (offre != null)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var offre = await _context.Offres.FindAsync(id);
-            if (offre != null)
-            {
-                Offre = offre;
-                _context.Offres.Remove(Offre);
-                await _context.SaveChangesAsync();
-            }
-
-            return RedirectToPage("./Index");
+            Offre = offre;
+            _context.Offres.Remove(Offre);
+            await _context.SaveChangesAsync();
         }
+
+        return RedirectToPage("./Index");
     }
 }
