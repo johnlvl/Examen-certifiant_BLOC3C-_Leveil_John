@@ -10,7 +10,7 @@ public class PaimentService : IPaiementService
     /// </summary>
     /// <param name="prix">Le montant du paiement à traiter.</param>
     /// <returns>Retourne `true` pour indiquer que le paiement a été réussi (simulation).</returns>
-    public bool ProcessPaiement(decimal prix)
+    public virtual bool ProcessPaiement(decimal prix)
     {
         // Simulation du paiement (toujours réussi dans ce cas fictif)
         return true;
