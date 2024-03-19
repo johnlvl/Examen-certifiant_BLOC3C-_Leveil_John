@@ -12,7 +12,7 @@ public class IndexModel : PageModel
 {
     private readonly ApplicationDbContext _context;
 
-    public IndexModel(ApplicationDbContext context)
+    public IndexModel(ApplicationDbContext context, object value, object value1)
     {
         _context = context;
     }
