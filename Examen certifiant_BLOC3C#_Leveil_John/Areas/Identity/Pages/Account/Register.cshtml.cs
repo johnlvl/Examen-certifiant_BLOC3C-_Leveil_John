@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using System.Security.Cryptography;
+using Examen_certifiant_BLOC3C__Leveil_John.Services.RoleService;
 
 namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Identity.Pages.Account
 {
@@ -31,13 +32,15 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly UserRegisteredEventHandler _userRegisteredEventHandler;
 
         public RegisterModel(
             UserManager<ApplicationUser> userManager,
             IUserStore<ApplicationUser> userStore,
             SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            UserRegisteredEventHandler userRegisteredEventHandler)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +48,7 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _userRegisteredEventHandler = userRegisteredEventHandler;
         }
 
         /// <summary>
@@ -156,6 +160,9 @@ namespace Examen_certifiant_BLOC3C__Leveil_John.Areas.Identity.Pages.Account
 
                     await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                         $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+                    // Appel de la méthode Handle pour attribuer le rôle d'utilisateur
+                    await _userRegisteredEventHandler.Handle(userId);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
