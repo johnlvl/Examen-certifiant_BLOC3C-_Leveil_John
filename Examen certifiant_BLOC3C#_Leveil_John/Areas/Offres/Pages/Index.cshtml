@@ -6,9 +6,13 @@
     ViewData["Title"] = "Index";
 }
 
-<p>
-    <a asp-page="Create">Créer une nouvelle offre</a>
-</p>
+@if (User.Identity.IsAuthenticated && User.IsInRole("Administrateur"))
+{
+    <p>
+        <a asp-page="Create">Créer une nouvelle offre</a>
+    </p>
+}
+
 
 <div class="py-5">
     <div class="container">
@@ -29,7 +33,7 @@
                             <form method="post" asp-page-handler="AjouterAuPanier" asp-route-offreId="@item.ID">
                                 <button type="submit" class="btn btn-primary mt-3">Ajouter au Panier</button>
                             </form>
-                            @if (User.Identity.IsAuthenticated && User.FindFirst(ClaimTypes.NameIdentifier)?.Value == "6ce3ecae-1eb1-4181-86d2-9c4eaec24539")
+                            @if (User.Identity.IsAuthenticated && User.Identity.IsAuthenticated && User.IsInRole("Administrateur"))
                             {
                                 <a asp-page="./Edit" asp-route-id="@item.ID">Editer</a>
                                 <a asp-page="./Details" asp-route-id="@item.ID">Détails</a>

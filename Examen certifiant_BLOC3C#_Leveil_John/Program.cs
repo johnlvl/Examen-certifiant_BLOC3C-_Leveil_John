@@ -2,8 +2,10 @@ using Examen_certifiant_BLOC3C__Leveil_John.Data;
 using Examen_certifiant_BLOC3C__Leveil_John.Services.AdminService;
 using Examen_certifiant_BLOC3C__Leveil_John.Services.PaimentService;
 using Examen_certifiant_BLOC3C__Leveil_John.Services.QrCodeService;
+using Examen_certifiant_BLOC3C__Leveil_John.Services.RoleService;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authorization.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +17,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    .AddRoles<IdentityRole>() // Ajoute le service RoleManager<IdentityRole>
     .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddRazorPages();
 
@@ -31,21 +34,11 @@ builder.Services.AddSession(options =>
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddControllersWithViews();
-// Ajout du service AdminIdRequirementHandler en lui passant l'ID de l'administrateur
-builder.Services.AddScoped<IAuthorizationHandler>(provider => new AdminService("6ce3ecae-1eb1-4181-86d2-9c4eaec24539"));
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdministrateurUniquement", policy =>
-    {
-        policy.RequireAuthenticatedUser();
-        policy.Requirements.Add(new OperationAuthorizationRequirement { Name = "AdministrateurUniquement" });
-    });
-});
-
-builder.Services.AddRazorPages(options =>
-{
-    options.Conventions.AuthorizeFolder("/Administrateur", "AdministrateurUniquement");
+    options.AddPolicy("AdministrateurUniquement",
+         policy => policy.RequireRole("Administrateur"));
 });
 
 // Ajout de service PaiementService
@@ -53,6 +46,12 @@ builder.Services.AddScoped<PaimentService>();
 
 // Ajout du service QrCodeService
 builder.Services.AddTransient<QrCodeService>();
+
+//Ajout du service RoleService
+builder.Services.AddScoped<RoleService>();
+
+//Ajout du service UserRegisteredEventHandler
+builder.Services.AddScoped<UserRegisteredEventHandler>();
 
 var app = builder.Build();
 
@@ -79,5 +78,12 @@ app.UseAuthorization();
 app.UseSession();
 
 app.MapRazorPages();
+
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var roleInitializer = services.GetRequiredService<RoleService>();
+    await roleInitializer.InitializeRoles();
+}
 
 app.Run();

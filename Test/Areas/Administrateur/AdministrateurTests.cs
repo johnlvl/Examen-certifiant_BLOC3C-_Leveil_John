@@ -39,7 +39,7 @@ public class AdministrateurTests
         mockContext.Setup(c => c.Reservations).Returns(mockDbSet.Object);
 
         // Crée une instance de la classe à tester en utilisant le contexte de données simulé
-        var instance = new IndexModel(mockContext.Object, null, null);
+        var instance = new IndexModel(mockContext.Object);
 
         // Exécute la méthode à tester
         var result = instance.GetTotalCommandeParOffre();
@@ -73,7 +73,7 @@ public class AdministrateurTests
         var mockContext = new Mock<ApplicationDbContext>(options);
         mockContext.Setup(c => c.Reservations).Returns(mockDbSet.Object);
 
-        var instance = new IndexModel(mockContext.Object, null, null);
+        var instance = new IndexModel(mockContext.Object);
 
         var result = instance.GetTotalCommande();
 
@@ -103,7 +103,7 @@ public class AdministrateurTests
         var mockContext = new Mock<ApplicationDbContext>(options);
         mockContext.Setup(c => c.Users).Returns(mockDbSet.Object);
 
-        var instance = new IndexModel(mockContext.Object, null, null);
+        var instance = new IndexModel(mockContext.Object);
 
         var result = instance.GetTotalUtilisateur();
 
