@@ -1,5 +1,21 @@
 # Examen certifiant_BLOC3C#_Leveil_John
 
+Présentation <br />
+Bienvenue dans mon application pour la gestion des billets des Jeux Olympiques 2024, développée en ASP.NET Core. Cette application permet aux utilisateurs de parcourir et ajouter des offres à leur panier, et aux administrateurs de gérer les offres. Elle utilise Entity Framework Core pour la gestion des données et inclut des fonctionnalités de sécurité robustes pour garantir la protection des données utilisateur.
+
+Fonctionnalités <br />
+Gestion des Offres : Les utilisateurs peuvent consulter les offres disponibles. <br />
+Panier d'Achat : Les utilisateurs peuvent ajouter des offres à leur panier. <br />
+Authentification et Autorisation : Utilisation d'ASP.NET Core Identity pour gérer l'authentification et l'autorisation. <br />
+Gestion des Rôles : Les administrateurs peuvent gérer les offres. <br />
+
+Technologies Utilisées<br />
+ASP.NET Core <br />
+Entity Framework Core <br />
+SQL Server <br />
+Bootstrap (pour le design de l'interface utilisateur) <br />
+<br />
+
 Instructions pour Lancer le Projet en Local
 1. Prérequis :
    
